@@ -4,6 +4,12 @@ int enemies = 10;
 int obstaculos = 15;
 int lives = 100;
 int vidas = 1;
+//boosts
+PImage boost_plus;
+PImage boost_minus;
+PImage boost_lives;
+
+PVector[] boosts;
 
 float [] xPNJ = new float[enemies];
 float [] yPNJ = new float[enemies];
@@ -22,6 +28,11 @@ float [] moduloef = new float[enemies];
 float [] vxep = new float[enemies];
 float [] vyep = new float[enemies];
 float [] moduloep = new float[enemies];
+float [] vxpb = new float[3];
+float [] vypb = new float[3];
+float [] modulopb = new float[3];
+
+
 
 float [] playerPos = new float[2];
 float [] friendPos = new float[2];
@@ -37,6 +48,20 @@ int omega = 15;
 //SETUP
 void setup() {
   size(1300, 900);
+  
+  boost_plus = loadImage("flecha_mas.png");
+  boost_minus = loadImage("flecha_menos.png");
+  boost_lives = loadImage("corazon.png");
+  
+  boosts = new PVector[3];
+  
+  for(int i = 0; i < 3; i++)
+  {
+   float x = random(width-50);
+   float y = random(height-50);
+   boosts[i] = new PVector(x,y);
+  }
+
 
   radio = 17.5;
   cajas = new PVector[obstaculos];
@@ -98,7 +123,42 @@ void draw() {
     vyep[i] = playerPos[1] - yPNJ[i];
     moduloep[i] = sqrt(vxep[i]*vxep[i]+vyep[i]*vyep[i]);
   }
+  //boost 1 = plus / boost 2 = minus / boost 3 = lives
+  for (int i = 0; i < 3; i++)
+  {
+    vxpb[i] = playerPos[0] - boosts[i].x;
+    vypb[i] = playerPos[1] - boosts[i].y;
+    modulopb[i] = sqrt(vxpb[i]*vxpb[i]+vypb[i]*vypb[i]);
+  }
+  //plus
+  if (modulopb[0] <= radio*2.0)
+  {
+   for(int i = 0; i < enemies; i++)
+   {
+    alfa[i] += 0.5;
+   }
+  }
+  //minus
+  if(modulopb[1] <= radio*2.0)
+  {
+   for(int i = 0; i < enemies; i++)
+   {
+    alfa[i] -=0.3;
+   }
+  }
+  //lives
+  if (modulopb[2] <= radio*2.0)
+  {
+   for(int i = 0; i < enemies; i++)
+   {
+    vidas++; 
+   }
+  }
   // pintar
+  image(boost_plus,boosts[0].x,boosts[0].y, radio*2.0,radio*4.0);
+  image(boost_minus,boosts[1].x,boosts[1].y, radio*2.0,radio*4.0);
+  image(boost_lives,boosts[2].x,boosts[2].y, radio*2.0,radio*4.0);
+
 
   rectMode(CENTER);
   for (int i = 0; i<obstaculos; i++) {
