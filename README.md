@@ -2,3 +2,5 @@
 
 El archivo definitivo es Pain_it_Bloody_Red, los otros son versiones antiguas.
 
+
+Puede morir en este juego, pero pasado un tiempo vuelves a una pantalla original aún más cursed.
